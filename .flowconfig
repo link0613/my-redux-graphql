@@ -1,0 +1,10 @@
+[ignore]
+
+[include]
+
+[libs]
+./interfaces/global.js
+
+[options]
+module.system=haste
+strip_root=true

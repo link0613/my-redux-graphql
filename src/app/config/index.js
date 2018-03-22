@@ -4,6 +4,7 @@ export const appConfig = {
   // apollo client:
   apollo: {
     networkInterface:
-      'https://us-west-2.api.scaphold.io/graphql/flawless-basketball',
+      'https://us-west-2.api.scaphold.io/graphql/react-apollo-starter-kit',
+      
   },
 };

@@ -2,8 +2,6 @@ ES6+ React + React-Router + Redux + GraphQL + Apollo Client + Bootstrap
 ==========
 
 ## Detailed Content
-
-**Front:**
 - React JS (15.6.x - [github :link:](https://github.com/facebook/react))
 - Redux (*as you application grows managing state will be a serious concern, save pain with Redux*)
 - apollo-client 1.9.x (*futur of API. Learn about this beast [here in officiel website](http://dev.apollodata.com/)*)

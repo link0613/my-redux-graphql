@@ -1,7 +1,7 @@
 {
-  "name": "react-redux-graphql-apollo-bootstrap-webpack-starter",
+  "name": "react-redux-graphql-apollo",
   "version": "1.0.0",
-  "description": "react js + redux + graphQL + Apollo + react router4 + hot reload + devTools + bootstrap + webpack 3 starter",
+  "description": "V1 World wide",
   "main": "src/index.js",
   "scripts": {
     "flow": "flow",
@@ -38,15 +38,7 @@
     "hot-reload",
     "redux-devtools-extension"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MacKentoch/react-redux-graphql-apollo-bootstrap-webpack-starter.git"
-  },
-  "bugs": {
-    "url": "https://github.com/MacKentoch/react-redux-graphql-apollo-bootstrap-webpack-starter/issues"
-  },
-  "author": "Erwan DATIN (MacKentoch)",
-  "license": "MIT",
+  
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",

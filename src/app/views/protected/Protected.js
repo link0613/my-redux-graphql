@@ -6,6 +6,18 @@ import React, {
 import PropTypes      from 'prop-types';
 import cx             from 'classnames';
 
+import { Dashboard, ManageProducts, ManageCategories } from '../../components';
+
+const components = {
+  dashboard: Dashboard,
+  managecategories: ManageCategories,
+  manageproducts: ManageProducts
+}
+
+function tabPanel (panelName) {
+  const SpecificPanel = components[panelName];
+  return <SpecificPanel/>;
+}
 class Protected extends PureComponent {
   static propTypes= {
     // react-router 4:
@@ -20,7 +32,12 @@ class Protected extends PureComponent {
   };
 
   state = {
-    viewEntersAnim: true
+    viewEntersAnim: true,
+    menuItem: [
+      [ 0, "Dashboard", "Dashboard" ],
+      [ 1, "Manage Products", "ManageProducts"],
+      [ 2, "Manage Categories", "ManageCategories"] 
+    ]
   };
 
   componentDidMount() {
@@ -34,15 +51,29 @@ class Protected extends PureComponent {
   }
 
   render() {
-    const { viewEntersAnim } = this.state;
+    const { viewEntersAnim, menuItem } = this.state;
     return(
       <div className={cx({ "view-enter": viewEntersAnim })}>
-        <h1 className="text-danger">
-          Here is a protected view!
-        </h1>
-        <h2 className="text-danger">
-          You've just logged in to be able to enter this view.
-        </h2>
+        <ul className="nav nav-tabs" id="myTab" role="tablist">
+          {
+            menuItem.map((item, index) => (
+              <li className={`nav-item ${index==0?'active':''}`}>
+                <a className="nav-link" id={`${item[2].toLowerCase()}-tab`} data-toggle="tab" href={`#${item[2].toLowerCase()}`} role="tab" aria-controls={item[2].toLowerCase()} aria-selected="true">{item[1]}</a>
+              </li>
+            ))            
+          }
+        </ul>
+
+        <div className="tab-content" id="myTabContent">
+          {
+            menuItem.map((item, index) => (
+              <div className={`tab-pane fade in ${index==0?'active':''}`} id={item[2].toLowerCase()} role="tabpanel" aria-labelledby={`${item[2].toLowerCase()}-tab`}>
+                {tabPanel(item[2].toLowerCase())}
+              </div>
+             ))
+          }
+        </div>
+
       </div>
     );
   }

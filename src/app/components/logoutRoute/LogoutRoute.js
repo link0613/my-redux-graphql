@@ -1,31 +1,35 @@
-// @flow
+// @flow weak
 
-// #region imports
-import React, { PureComponent } from 'react';
-import { Route, Redirect, withRouter } from 'react-router-dom';
-import auth from '../../services/auth';
-// #endregion
+import React, {
+  PureComponent
+}                       from "react";
+import PropTypes        from "prop-types";
+import {
+  Route,
+  Redirect,
+  withRouter
+}                       from "react-router-dom";
+import auth             from "../../services/auth";
 
-// #region flow types
-export type Props = { ...any };
+class LogoutRoute extends PureComponent {
+  static propTypes = {
+    // react-router 4:
+    match:    PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history:  PropTypes.object.isRequired
+  };
 
-export type State = { ...any };
-// #endregion
-
-class LogoutRoute extends PureComponent<Props, State> {
-  // #region lifecycle
   componentDidMount() {
     auth.clearAllAppStorage();
   }
 
   render() {
     return (
-      <Route {...this.props}>
+      <Route { ...this.props }>
         <Redirect to={{ pathname: '/login' }} />
       </Route>
     );
   }
-  // #endregion
 }
 
 export default withRouter(LogoutRoute);

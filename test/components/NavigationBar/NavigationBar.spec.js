@@ -10,7 +10,7 @@ import { NavigationBar }  from '../../../src/app/components';
 chai.use(dirtyChai);
 
 const navModel = {
-  brand:      'React Redux Bootstrap Starter',
+  brand:      'V1 eCom',
   leftLinks:  [
     {
       label:      'a left Link',

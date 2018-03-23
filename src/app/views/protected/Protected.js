@@ -1,51 +1,28 @@
-// @flow
-/* eslint-disable quotes */
+// @flow weak
 
-// #region imports
-import React, { PureComponent } from 'react';
-import classnames from 'classnames';
-import styles from './protected.scss';
-import { type Match, type Location, type RouterHistory } from 'react-router';
-// #endregion
+import React, {
+  PureComponent
+}                     from 'react';
+import PropTypes      from 'prop-types';
+import cx             from 'classnames';
 
-// #region flow types
-export type Props = {
-  // react-router 4:
-  match: Match,
-  location: Location,
-  history: RouterHistory,
+class Protected extends PureComponent {
+  static propTypes= {
+    // react-router 4:
+    match:    PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history:  PropTypes.object.isRequired,
 
-  // views props:
-  currentView: string,
-
-  // errors:
-  error: any,
-
-  // views
-  enterProtected: () => any,
-  leaveProtected: () => any,
-
-  ...any,
-};
-
-export type State = {
-  viewEntersAnim: boolean,
-
-  ...any,
-};
-// #endregion
-
-// #region constants
-// IMPORTANT: we need to bind classnames to CSSModule generated classes:
-const cx = classnames.bind(styles);
-// #endregion
-
-class Protected extends PureComponent<Props, State> {
-  state = {
-    viewEntersAnim: true,
+    // views
+    currentView:    PropTypes.string.isRequired,
+    enterProtected: PropTypes.func.isRequired,
+    leaveProtected: PropTypes.func.isRequired
   };
 
-  // #region lifecycle
+  state = {
+    viewEntersAnim: true
+  };
+
   componentDidMount() {
     const { enterProtected } = this.props;
     enterProtected();
@@ -58,16 +35,17 @@ class Protected extends PureComponent<Props, State> {
 
   render() {
     const { viewEntersAnim } = this.state;
-    return (
-      <div className={cx({ 'view-enter': viewEntersAnim })}>
-        <h1 className="text-danger">Here is a protected view!</h1>
+    return(
+      <div className={cx({ "view-enter": viewEntersAnim })}>
+        <h1 className="text-danger">
+          Here is a protected view!
+        </h1>
         <h2 className="text-danger">
-          {`You've just logged in to be able to enter this view.`}
+          You've just logged in to be able to enter this view.
         </h2>
       </div>
     );
   }
-  // #endregion
 }
 
 export default Protected;

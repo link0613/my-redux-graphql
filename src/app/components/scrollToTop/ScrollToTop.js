@@ -1,30 +1,19 @@
-// @flow
+// @flow weak
 
-// #region imports
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
-// #endregion
+import React, {
+  Component
+}                     from 'react';
+import PropTypes      from 'prop-types';
+import { withRouter } from 'react-router'
 
-// #region flow types
-export type State = { ...any };
-export type Props = {
-  match: any,
-  location: any,
-  history: any,
-
-  children: React$Node,
-};
-// #endregion
-
-class ScrollToTop extends Component<Props, State> {
+class ScrollToTop extends Component {
   static propTypes = {
     // react-router 4:
-    match: PropTypes.object.isRequired,
+    match:    PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
+    history:  PropTypes.object.isRequired,
 
-    children: PropTypes.node,
+    children: PropTypes.node
   };
 
   componentDidUpdate(prevProps) {
@@ -40,8 +29,7 @@ class ScrollToTop extends Component<Props, State> {
 
   render() {
     const { children } = this.props;
-
-    return <div>{children}</div>;
+    return children;
   }
 }
 

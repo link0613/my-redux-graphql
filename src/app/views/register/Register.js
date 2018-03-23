@@ -1,84 +1,44 @@
-// @flow
+// @flow weak
 
-// #region imports
-import React, { PureComponent } from 'react';
-import classnames from 'classnames';
-import { Link } from 'react-router-dom';
-import { ErrorAlert, WarningAlert } from '../../components';
-import styles from './register.scss';
-import { type Match, type Location, type RouterHistory } from 'react-router';
+import React, {
+  PureComponent
+}                     from 'react';
+import PropTypes      from 'prop-types';
+import cx             from 'classnames';
+import { Link }       from 'react-router-dom';
 import {
-  type SetLoadingStateForUserRegister,
-  type UnsetLoadingStateForUserRegister,
-  type ReceivedUserRegister,
-  type ErrorUserRegister,
-} from '../../redux/modules/userAuth.types';
-// #endregion
+  ErrorAlert,
+  WarningAlert
+}                     from '../../components';
 
-// #region flow types
-export type CreateUserInput = {
-  user: {
-    username: string,
-    password: string,
-  },
-};
+class Register extends PureComponent {
+  static propTypes= {
+    // react-router 4:
+    match:    PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history:  PropTypes.object.isRequired,
 
-export type Props = {
-  // react-router 4:
-  match: Match,
-  location: Location,
-  history: RouterHistory,
+    // views props:
+    currentView:    PropTypes.string.isRequired,
+    enterRegister:  PropTypes.func.isRequired,
+    leaveRegister:  PropTypes.func.isRequired,
+    // auth props:
+    userIsAuthenticated: PropTypes.bool.isRequired,
+    mutationLoading: PropTypes.bool.isRequired,
+    error: PropTypes.object,
 
-  // registerUser apollo mutation
-  registerUser: ({
-    user: {
-      username: email,
-      password: password,
-    },
-  }) => any,
+    // apollo actions
+    registerUser: PropTypes.func.isRequired,
+    resetError: PropTypes.func.isRequired
+  };
 
-  // views props:
-  currentView: string,
-
-  // user Auth props:
-  userIsAuthenticated: boolean,
-  mutationLoading: boolean,
-  receivedUserRegister: ReceivedUserRegister,
-  setLoadingStateForUserRegister: SetLoadingStateForUserRegister,
-  unsetLoadingStateForUserRegister: UnsetLoadingStateForUserRegister,
-  errorUserRegister: ErrorUserRegister,
-
-  // errors:
-  error: any,
-
-  // views
-  enterRegister: () => any,
-  leaveRegister: () => any,
-
-  ...any,
-};
-
-export type State = {
-  viewEntersAnim: boolean,
-  email: string,
-  password: string,
-  warning: any,
-
-  ...any,
-};
-// #endregion
-
-// #region constants
-// IMPORTANT: we need to bind classnames to CSSModule generated classes:
-const cx = classnames.bind(styles);
-// #endregion
-
-class Register extends PureComponent<Props, State> {
   state = {
     viewEntersAnim: true,
-    email: '',
-    password: '',
-    warning: null,
+
+    email:          '',
+    password:       '',
+
+    warning:        null
   };
 
   componentDidMount() {
@@ -92,22 +52,33 @@ class Register extends PureComponent<Props, State> {
   }
 
   render() {
-    const { viewEntersAnim, email, password, warning } = this.state;
+    const {
+      viewEntersAnim,
+      email,
+      password,
+      warning
+    } = this.state;
 
-    const { mutationLoading, error } = this.props;
+    const {
+      mutationLoading,
+      error
+    } = this.props;
 
-    return (
-      <div className={cx({ 'view-enter': viewEntersAnim })}>
+    return(
+      <div className={cx({ "view-enter": viewEntersAnim })}>
         <div className="row">
           <div className="col-md-4 col-md-offset-4">
-            <form className="form-horizontal" noValidate>
+            <form
+              className="form-horizontal"
+              noValidate>
               <fieldset>
-                <legend>Register</legend>
+                <legend>
+                  Register
+                </legend>
                 <div className="form-group">
                   <label
                     htmlFor="inputEmail"
-                    className="col-lg-2 control-label"
-                  >
+                    className="col-lg-2 control-label">
                     Email
                   </label>
                   <div className="col-lg-10">
@@ -124,8 +95,7 @@ class Register extends PureComponent<Props, State> {
                 <div className="form-group">
                   <label
                     htmlFor="inputPassword"
-                    className="col-lg-2 control-label"
-                  >
+                    className="col-lg-2 control-label">
                     Password
                   </label>
                   <div className="col-lg-10">
@@ -142,21 +112,22 @@ class Register extends PureComponent<Props, State> {
 
                 <div className="form-group">
                   <div className="col-lg-10 col-lg-offset-2">
-                    <Link className="btn btn-default" to={'/'}>
+                    <Link
+                      className="btn btn-default"
+                      to={'/'}>
                       Cancel
                     </Link>
                     <button
-                      className="btn btn-primary registerButton"
+                      className="btn btn-primary register-button"
                       disabled={mutationLoading}
-                      onClick={this.handlesOnRegister}
-                    >
+                      onClick={this.handlesOnRegister}>
                       Register
                     </button>
                   </div>
                 </div>
               </fieldset>
             </form>
-            <div style={{ height: '150px' }}>
+            <div style={{height: '150px'}}>
               <WarningAlert
                 showAlert={!!warning}
                 warningTitle={'Warning'}
@@ -172,36 +143,45 @@ class Register extends PureComponent<Props, State> {
             </div>
           </div>
         </div>
+
       </div>
     );
   }
 
-  handlesOnEmailChange = event => {
+  handlesOnEmailChange = (event) => {
     event.preventDefault();
     // should add some validator before setState in real use cases
     const email = event.target.value;
-    this.setState({ email });
-  };
+    this.setState({ email});
+  }
 
-  handlesOnPasswordChange = event => {
+  handlesOnPasswordChange = (event) => {
     event.preventDefault();
     // should add some validator before setState in real use cases
     this.setState({ password: event.target.value });
-  };
+  }
 
-  handlesOnRegister = async event => {
+  handlesOnRegister = async (event) => {
     event.preventDefault();
-    const { registerUser, history } = this.props;
+    const {
+      registerUser,
+      history
+    } = this.props;
 
-    const { email, password } = this.state;
+    const {
+      email,
+      password
+    } = this.state;
 
-    const user = {
-      username: email,
-      password: password,
+    const variables = {
+      user: {
+        username: email,
+        password: password
+      }
     };
 
-    // const { resetStore } = this.props;
-    // resetStore();
+    const { resetError } = this.props;
+    resetError();
     this.setState({ warning: null });
 
     if (!this.isValidEmail(email)) {
@@ -210,19 +190,17 @@ class Register extends PureComponent<Props, State> {
     }
 
     if (!this.isValidPassword(password)) {
-      this.setState({
-        warning: { message: 'Password is empty or not valid.' },
-      });
+      this.setState({ warning: { message: 'Password is empty or not valid.' } });
       return;
     }
 
     try {
-      await registerUser({ user });
+      await registerUser({variables});
       history.push({ pathname: '/protected' });
     } catch (error) {
-      console.log('register user went wrong..., error: ', error);
+      console.log('register user went wrong..., error: ', error)
     }
-  };
+  }
 
   isValidEmail(email = '') {
     // basic validation, better user "validate.js" for real validation
@@ -240,16 +218,16 @@ class Register extends PureComponent<Props, State> {
     return false;
   }
 
-  closeError = event => {
+  closeError = (event) => {
     event.preventDefault();
-    // const { resetStore } = this.props;
-    // resetStore();
-  };
+    const { resetError } = this.props;
+    resetError();
+  }
 
   closeWarning = event => {
     event.preventDefault();
     this.setState({ warning: null });
-  };
+  }
 }
 
 export default Register;

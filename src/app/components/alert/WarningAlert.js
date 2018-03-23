@@ -1,56 +1,73 @@
-// @flow
+// @flow weak
 
-// #region imports
-import React, { PureComponent } from 'react';
-import { Motion, spring, presets } from 'react-motion';
-// #endregion
+import React, {
+  PureComponent
+}      from 'react';
+import PropTypes  from 'prop-types';
+import {
+  Motion,
+  spring,
+  presets
+}                 from 'react-motion';
 
-// #region flow types
-type Props = {
-  showAlert: boolean,
-  warningTitle: string,
-  warningMessage: string,
-  onClose: () => any,
-};
 
-type State = {};
-// #endregion
-
-class WarningAlert extends PureComponent<Props, State> {
-  static defaultProps = {
-    showAlert: false,
+class WarningAlert extends PureComponent {
+  static propTypes = {
+    showAlert:      PropTypes.bool,
+    warningTitle:   PropTypes.string,
+    warningMessage: PropTypes.string,
+    onClose:        PropTypes.func.isRequired
   };
 
-  // #region lifecycle methods
+  static defaultProps = {
+    showAlert: false
+  };
+
   render() {
-    const { showAlert, warningTitle, warningMessage, onClose } = this.props;
+    const {
+      showAlert,
+      warningTitle,
+      warningMessage,
+      onClose
+    } = this.props;
 
     return (
       <Motion
-        style={{
-          interpolatedScale: spring(showAlert ? 1 : 0, presets.stiff),
-        }}
-      >
-        {({ interpolatedScale }) => (
-          <div
-            className="alert alert-dismissible alert-warning"
-            style={{
-              WebkitTransform: `scale(${interpolatedScale})`,
-              transform: `scale(${interpolatedScale})`,
-            }}
-          >
-            <button type="button" className="close" onClick={onClose}>
-              &times;
-            </button>
-            {warningTitle &&
-              warningTitle.length > 0 && <strong>{warningTitle}</strong>}
-            {<p>{warningMessage}</p>}
-          </div>
-        )}
+       style={{
+         interpolatedScale: spring(showAlert ? 1 : 0, presets.stiff)
+       }}>
+       {
+         ({ interpolatedScale }) => (
+           <div
+             className="alert alert-dismissible alert-warning"
+             style={{
+               WebkitTransform:  `scale(${interpolatedScale})`,
+               transform:        `scale(${interpolatedScale})`
+             }}
+           >
+             <button
+               type="button"
+               className="close"
+               onClick={onClose}>
+               &times;
+             </button>
+             {
+               warningTitle && warningTitle.length > 0 &&
+               <strong>
+                 {warningTitle}
+               </strong>
+             }
+             {
+               <p>
+                 {warningMessage}
+               </p>
+             }
+           </div>
+          )
+        }
       </Motion>
     );
   }
-  // #endregion
 }
 
 export default WarningAlert;

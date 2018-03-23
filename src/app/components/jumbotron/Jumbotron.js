@@ -1,30 +1,18 @@
-// @flow
+// @flow weak
 
-// #region imports
-import React from 'react';
-// #endregion
+import React            from 'react';
+import PropTypes        from 'prop-types';
 
-// #region flow types
-export type Props = {
-  // react-router 4:
-  match: any,
-  location: any,
-  history: any,
-
-  children: React$Node,
-
-  ...any,
-};
-
-export type State = {};
-// #endregion
-
-const Jumbotron = ({ children }: Props) => (
-  <div className="jumbotron">{children}</div>
+const Jumbotron = ({
+  children
+}) => (
+  <div className="jumbotron">
+    { children }
+  </div>
 );
 
-// #region static props
-Jumbotron.displayName = 'Jumbotron';
-// #endregion
+Jumbotron.propTypes = {
+  children: PropTypes.node
+};
 
 export default Jumbotron;

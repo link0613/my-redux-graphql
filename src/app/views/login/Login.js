@@ -1,72 +1,50 @@
-// @flow
+// @flow weak
 
-// #region imports
-import React, { PureComponent } from 'react';
-// import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+import React, {
+  PureComponent
+}                     from 'react';
+import PropTypes      from 'prop-types';
+import cx             from 'classnames';
+import { Link }       from 'react-router-dom';
 import { ErrorAlert } from '../../components';
-import * as UserAuthTypes from '../../redux/modules/userAuth.types';
-import { type Match, type Location, type RouterHistory } from 'react-router';
-// import styles from './login.scss';
-// #endregion
 
-// #region flow types
-export type LoginUserPayload = {
-  user: {
-    username: string,
-    password: string,
-  },
-};
+class Login extends PureComponent {
+  static propTypes= {
+    // react-router 4:
+    match:    PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history:  PropTypes.object.isRequired,
 
-export type Props = {
-  // react-router 4:
-  match: Match,
-  location: Location,
-  history: RouterHistory,
+    // views props:
+    currentView: PropTypes.string.isRequired,
+    enterLogin:  PropTypes.func.isRequired,
+    leaveLogin:  PropTypes.func.isRequired,
 
-  // views props:
-  currentView: string,
-  enterLogin: () => any,
-  leaveLogin: () => any,
+    // apollo props:
+    user: PropTypes.shape({
+      username: PropTypes.string
+    }),
 
-  // user Auth props:
-  userIsAuthenticated: boolean,
-  mutationLoading: boolean,
-  receivedUserLoggedIn: UserAuthTypes.ReceivedUserLoggedIn,
-  errorUserLoggedIn: UserAuthTypes.ErrorUserLoggedIn,
-  resetLogError: UserAuthTypes.ResetLogError,
-  setLoadingStateForUserLogin: UserAuthTypes.SetLoadingStateForUserLogin,
-  unsetLoadingStateForUserLogin: UserAuthTypes.UnsetLoadingStateForUserLogin,
+    // auth props:
+    userIsAuthenticated: PropTypes.bool.isRequired,
+    mutationLoading:     PropTypes.bool.isRequired,
+    error:               PropTypes.object,
 
-  // errors:
-  error: any,
+    // apollo actions
+    loginUser: PropTypes.func.isRequired,
 
-  // grpahql loginUser mutation
-  loginUser: (user: LoginUserPayload) => Promise<any>,
-
-  ...any,
-};
-
-export type State = {
-  email: string,
-  password: string,
-
-  ...any,
-};
-// #endregion
-
-// #region constants
-// IMPORTANT: we need to bind classnames to CSSModule generated classes:
-// const cx = classnames.bind(styles);
-// #endregion
-
-class Login extends PureComponent<Props, State> {
-  state = {
-    email: '',
-    password: '',
+    // redux actions
+    onUserLoggedIn: PropTypes.func.isRequired,
+    resetError:     PropTypes.func.isRequired
   };
 
-  // #region component lifecycle
+  state = {
+    viewEntersAnim: true,
+
+    email:          '',
+    password:       ''
+  };
+
   componentDidMount() {
     const { enterLogin } = this.props;
     enterLogin();
@@ -78,21 +56,31 @@ class Login extends PureComponent<Props, State> {
   }
 
   render() {
-    const { email, password } = this.state;
-    const { mutationLoading, error } = this.props;
+    const {
+      viewEntersAnim,
+      email,
+      password
+    } = this.state;
+    const {
+      mutationLoading,
+      error
+    } = this.props;
 
     return (
-      <div>
+      <div className={cx({ "view-enter": viewEntersAnim })}>
         <div className="row">
           <div className="col-md-4 col-md-offset-4">
-            <form className="form-horizontal" noValidate>
+            <form
+              className="form-horizontal"
+              noValidate>
               <fieldset>
-                <legend>Login</legend>
+                <legend>
+                  Login
+                </legend>
                 <div className="form-group">
                   <label
                     htmlFor="inputEmail"
-                    className="col-lg-2 control-label"
-                  >
+                    className="col-lg-2 control-label">
                     Email
                   </label>
                   <div className="col-lg-10">
@@ -111,8 +99,7 @@ class Login extends PureComponent<Props, State> {
                 <div className="form-group">
                   <label
                     htmlFor="inputPassword"
-                    className="col-lg-2 control-label"
-                  >
+                    className="col-lg-2 control-label">
                     Password
                   </label>
                   <div className="col-lg-10">
@@ -128,14 +115,15 @@ class Login extends PureComponent<Props, State> {
                 </div>
                 <div className="form-group">
                   <div className="col-lg-10 col-lg-offset-2">
-                    <Link className="btn btn-default" to={'/'}>
+                    <Link
+                      className="btn btn-default"
+                      to={'/'}>
                       Cancel
                     </Link>
                     <button
-                      className="btn btn-primary loginButton"
+                      className="btn btn-primary login-button"
                       disabled={mutationLoading}
-                      onClick={this.handlesOnLogin}
-                    >
+                      onClick={this.handlesOnLogin}>
                       Login
                     </button>
                   </div>
@@ -153,46 +141,51 @@ class Login extends PureComponent<Props, State> {
       </div>
     );
   }
-  // #endregion
 
-  handlesOnEmailChange = event => {
+  handlesOnEmailChange = (event) => {
     event.preventDefault();
     // should add some validator before setState in real use cases
     this.setState({ email: event.target.value });
-  };
+  }
 
-  handlesOnPasswordChange = event => {
+  handlesOnPasswordChange = (event) => {
     event.preventDefault();
     // should add some validator before setState in real use cases
     this.setState({ password: event.target.value });
-  };
+  }
 
-  handlesOnLogin = async event => {
+  handlesOnLogin = async (event) => {
     event.preventDefault();
-    const { loginUser, history } = this.props;
+    const {
+      loginUser,
+      history
+    } = this.props;
 
-    const { email, password } = this.state;
+    const {
+      email,
+      password
+    } = this.state;
 
     const variables = {
       user: {
         username: email,
-        password: password,
-      },
+        password: password
+      }
     };
 
     try {
-      await loginUser({ variables });
+      await loginUser({variables});
       history.push({ pathname: '/protected' });
     } catch (error) {
       console.log('login went wrong..., error: ', error);
     }
-  };
+  }
 
-  closeError = event => {
+  closeError = (event) => {
     event.preventDefault();
-    const { resetLogError } = this.props;
-    resetLogError();
-  };
+    const { resetError } = this.props;
+    resetError();
+  }
 }
 
 export default Login;

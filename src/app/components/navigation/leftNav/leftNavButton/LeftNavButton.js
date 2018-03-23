@@ -1,42 +1,42 @@
-// @flow
+// @flow weak
 
-// #region imports
-import React, { PureComponent } from 'react';
-import { Link } from 'react-router-dom';
-// #endregion
+// @flow weak
 
-// #region flow types
-export type Props = {
-  link: string,
-  label: string,
-  viewName: string,
-  onClick: (event: SyntheticEvent<>, viewName: string) => any,
-};
+import React, {
+  PureComponent
+}                     from 'react';
+import PropTypes      from 'prop-types';
+import { Link }       from 'react-router-dom';
 
-export type State = { ...any };
-// #endregion
+class LeftNavButton extends PureComponent {
+  static propTypes = {
+    link:     PropTypes.string,
+    label:    PropTypes.string,
+    viewName: PropTypes.string,
+    onClick:  PropTypes.func
+  };
 
-class LeftNavButton extends PureComponent<Props, State> {
-  // #region lifecycle
   render() {
-    const { link, label } = this.props;
+    const {
+      link,
+      label
+    } = this.props;
 
     return (
       <li>
-        <Link to={link} onClick={this.handleLeftNavItemClick}>
+        <Link
+          to={link}
+          onClick={this.handleLeftNavItemClick}>
           {label}
         </Link>
       </li>
     );
   }
-  // #endregion
 
-  // #region on Link click event
-  handleLeftNavItemClick = (event: SyntheticEvent<>) => {
+  handleLeftNavItemClick = (event) => {
     const { onClick, viewName } = this.props;
     onClick(event, viewName);
-  };
-  // #endregion
+  }
 }
 
 export default LeftNavButton;

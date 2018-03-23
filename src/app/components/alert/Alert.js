@@ -1,64 +1,82 @@
-// @flow
+// @flow weak
 
-// #region imports
-import React, { PureComponent } from 'react';
-import { Motion, spring, presets } from 'react-motion';
-import cx from 'classnames';
-// #endregion
+import React, {
+  PureComponent
+}                 from 'react';
+import PropTypes  from 'prop-types';
+import {
+  Motion,
+  spring,
+  presets
+}                 from 'react-motion';
+import cx         from 'classnames';
 
-// #region flow types
-export type Props = {
-  showAlert: boolean,
-  errorTitle: string,
-  errorMessage: string,
-  onClose: () => any,
-  type: 'warning' | 'error',
-};
-
-export type State = {};
-// #endregion
-
-class Alert extends PureComponent<Props, State> {
-  static defaultProps = {
-    showAlert: false,
-    type: 'warning',
+class Alert extends PureComponent {
+  static propTypes = {
+    showAlert:    PropTypes.bool,
+    errorTitle:   PropTypes.string,
+    errorMessage: PropTypes.string,
+    onClose:      PropTypes.func.isRequired,
+    type:         PropTypes.oneOf(['warning', 'error'])
   };
 
-  // #region lifecycle methods
+  static defaultProps = {
+    showAlert: false,
+    type:      'warning'
+  };
+
   render() {
-    const { type, showAlert, errorTitle, errorMessage, onClose } = this.props;
+    const {
+      type,
+      showAlert,
+      errorTitle,
+      errorMessage,
+      onClose
+    } = this.props;
 
     return (
       <Motion
         style={{
-          interpolatedScale: spring(showAlert ? 1 : 0, presets.stiff),
-        }}
-      >
-        {({ interpolatedScale }) => (
-          <div
-            className={cx({
-              alert: true,
-              'alert-dismissible': true,
-              'alert-danger': type === 'error',
-              'alert-warning': type === 'warning',
-            })}
-            style={{
-              WebkitTransform: `scale(${interpolatedScale})`,
-              transform: `scale(${interpolatedScale})`,
-            }}
-          >
-            <button type="button" className="close" onClick={onClose}>
-              &times;
-            </button>
-            {errorTitle &&
-              errorTitle.length > 0 && <strong>{errorTitle}</strong>}
-            {<p>{errorMessage}</p>}
-          </div>
-        )}
+          interpolatedScale: spring(showAlert ? 1 : 0, presets.stiff)
+        }}>
+        {
+          ({ interpolatedScale }) => (
+            <div
+              className={
+                cx({
+                  'alert':              true,
+                  'alert-dismissible':  true,
+                  'alert-danger':       type === 'error',
+                  'alert-warning':      type === 'warning'
+                })
+              }
+              style={{
+                WebkitTransform:  `scale(${interpolatedScale})`,
+                transform:        `scale(${interpolatedScale})`
+              }}>
+              <button
+                type="button"
+                className="close"
+                onClick={onClose}>
+                &times;
+              </button>
+              {
+                errorTitle && errorTitle.length > 0 &&
+                <strong>
+                  {errorTitle}
+                </strong>
+              }
+              {
+                <p>
+                  {errorMessage}
+                </p>
+              }
+            </div>
+          )
+        }
       </Motion>
     );
   }
-  // #endregion
 }
 
 export default Alert;

@@ -21,6 +21,6 @@ describe('HomeConnected (Home container) ', () => {
   });
 
   it('should render container', () => {
-    expect(wrapper.containsMatchingElement(<h1>Full ES2015 ReactJS + Redux + graphQL + Apollo + Bootstrap</h1>));
+    expect(wrapper.containsMatchingElement(<h1>Innovational V1 World Wide</h1>));
   });
 });

@@ -21,7 +21,7 @@ class CategoryInputForm extends PureComponent {
         </div> 
         <div className="form-group">
           <label htmlFor="categoryActive"> isActive </label>
-          <input type="checkbox" className="form-control" id="categoryActive" placeholder="isActive"/>
+          <input type="checkbox" className="form-control" id="categoryActive" placeholder="isActive"  />
         </div> 
         <div className="form-group">
           <label htmlFor="categorySort"> Sort </label>

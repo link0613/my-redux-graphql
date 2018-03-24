@@ -79,15 +79,24 @@ const querySet = compose (
 
 class ManageCategories extends PureComponent {
 
-  
- 
-
   state = {
     selectedCategoryIndex: null,
   };
 
-  componentDidMount() {
+  sortAllCategories=async () => {
+    await this.props.allCategories({
+      variables: {
+        "orderBy": 
+        {
+          "field": "sort" ,
+          "direction": "DESC"
+        }
+      }
+    });
+  }
 
+  getDefaultPros() {
+    this.sortAllCategories();
   }
 
   selectCategory(index) {
@@ -97,8 +106,8 @@ class ManageCategories extends PureComponent {
     
     document.getElementById('categoryName').value = this.props.allCategories.viewer.allCategories.edges[index].node.name;
     document.getElementById('categoryDescription').value = this.props.allCategories.viewer.allCategories.edges[index].node.description;
-    document.getElementById('categoryActive').value = this.props.allCategories.viewer.allCategories.edges[index].node.isActive;
     document.getElementById('categorySort').value = this.props.allCategories.viewer.allCategories.edges[index].node.sort;
+    document.getElementById("categoryActive").checked = this.props.allCategories.viewer.allCategories.edges[index].node.isActive;
   }
 
   //CREATE
@@ -109,12 +118,13 @@ class ManageCategories extends PureComponent {
         {
           "name": document.getElementById('categoryName').value  ,
           "description": document.getElementById('categoryDescription').value  ,
-          "isActive": document.getElementById('categoryActive').value , 
+          "isActive": document.getElementById('categoryActive').checked , 
           "parentID": "",
           "sort": parseInt(document.getElementById('categorySort').value)
         }
       }
     });
+    this.props.allCategories.refetch();
   }
 
   //UPDATE
@@ -133,7 +143,7 @@ class ManageCategories extends PureComponent {
           "id": categoryID,
           "name": document.getElementById('categoryName').value  ,
           "description": document.getElementById('categoryDescription').value  ,
-          "isActive": document.getElementById('categoryActive').value , 
+          "isActive": document.getElementById('categoryActive').checked == true , 
           "parentID": "",
           "sort": parseInt(document.getElementById('categorySort').value)
         }
@@ -158,6 +168,11 @@ class ManageCategories extends PureComponent {
         }
       }
     });
+
+    this.props.allCategories.refetch();
+    this.setState({	
+			selectedCategoryIndex: null
+    });
   }
   
 
@@ -176,7 +191,6 @@ class ManageCategories extends PureComponent {
     if (allCategories.length === 0) {
       return <div>No Category</div>;
     }
-
     const selectedCategoryIndex = this.state.selectedCategoryIndex 
 
     return (

@@ -3,33 +3,63 @@
 import React, {
   PureComponent
 }                 from 'react';
-import PropTypes  from 'prop-types';
+import PropTypes from 'prop-types';
 import Select from 'react-select';
+import gql          from 'graphql-tag';
+import { graphql }  from 'react-apollo';
+import { compose }  from 'react-apollo'
 import 'react-select/dist/react-select.css';
 
+const ALL_CATEGORIES = gql`
+  query GetAllCategories($first: Int, $after: String, $orderBy: [CategoriesOrderByArgs]) {
+    viewer {
+        allCategories(first: $first, after: $after, orderBy: $orderBy) {
+          edges {
+            cursor
+            node {
+              id
+              name
+            }
+          }
+        }
+      }
+    }
+`;
 
-const FLAVOURS = [
-	{ label: 'Chocolate', value: 'chocolate' },
-	{ label: 'Vanilla', value: 'vanilla' },
-	{ label: 'Strawberry', value: 'strawberry' },
-	{ label: 'Caramel', value: 'caramel' },
-	{ label: 'Cookies and Cream', value: 'cookiescream' },
-	{ label: 'Peppermint', value: 'peppermint' },
-];
 
 class ProductInputForm extends PureComponent {
-  //<input type="text" className="form-control" id="productCategories" placeholder="Categories"/>
-  state = {
-    value: [],
+  static propTypes = {
+    selected: PropTypes.string.isRequired,
   }
+
  
+  constructor(props) {
+    super(props);
+    this.state = { value: [] };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ value: nextProps.selected });
+  }
+   
 	handleSelectChange = (value) => {
-		console.log('You\'ve selected:', value);
-		this.setState({ value });
-	}
+    this.setState({ value: value });
+  }
+
   render() {
 
+    if (this.props.allCategories && this.props.allCategories.loading) {
+      return <div>Loading ...</div>;
+    }
+    
     const {value} = this.state;
+    const options = this.props.allCategories.viewer.allCategories.edges.map(obj =>{ 
+      var rObj = {};
+      rObj['value'] = obj.node.id;
+      rObj['label'] = obj.node.name;
+      return rObj;
+    })
+
     return (
       <div>
         <div className="form-group">
@@ -53,17 +83,17 @@ class ProductInputForm extends PureComponent {
           <Select
             multi
             onChange={this.handleSelectChange}
-            options={FLAVOURS}
-            placeholder="Select your favourite(s)"
+            options={options}
+            placeholder="Select categories"
             simpleValue
             value={value}
-				  />        
+				  />
+          <input type="hidden" className="form-control" id="productCategories" placeholder="Selected Categories" value={value} />
         </div> 
       </div>
     );
   }
 }
  
-export default ProductInputForm;
-
+export default graphql(ALL_CATEGORIES, {name: "allCategories"}) (ProductInputForm)
 

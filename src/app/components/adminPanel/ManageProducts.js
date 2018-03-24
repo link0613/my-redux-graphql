@@ -9,27 +9,7 @@ import { graphql }  from 'react-apollo';
 import { compose }  from 'react-apollo'
 import ProductInputForm from './ProductInputForm'
 
-const ALL_CATEGORIES = gql`
-  query GetAllCategories($first: Int, $after: String, $orderBy: [CategoriesOrderByArgs]) {
-    viewer {
-        allCategories(first: $first, after: $after, orderBy: $orderBy) {
-          edges {
-            cursor
-            node {
-              id
-              name
-              description
-              parentID
-              isActive
-              sort
-              createdAt
-              modifiedAt
-            }
-          }
-        }
-      }
-    }
-`;
+
 
 const ALL_PRODUCTS = gql`
   query GetAllProducts($first: Int, $after: String, $orderBy: [ProductsOrderByArgs]) {
@@ -96,7 +76,6 @@ const DELETE_PRODUCT = gql`
 `
 
 const querySet = compose (
-  graphql(ALL_CATEGORIES, {name: "allCategoris"}),
   graphql(ALL_PRODUCTS, {name: "allProducts"}),
   graphql(CREATE_PRODUCT, {name: "createProduct"}),
   graphql(UPDATE_PRODUCT, {name: "updateProduct"}),
@@ -135,7 +114,7 @@ class ManageProducts extends PureComponent {
     document.getElementById('productSKU').value = this.props.allProducts.viewer.allProducts.edges[index].node.sku;
     document.getElementById('productPrice').value = this.props.allProducts.viewer.allProducts.edges[index].node.price;
     document.getElementById('productQuantity').value = this.props.allProducts.viewer.allProducts.edges[index].node.quantity;
-    document.getElementById('productCategories').value = this.props.allProducts.viewer.allProducts.edges[index].node.categories;
+ 
   }
 
   //CREATE
@@ -181,6 +160,7 @@ class ManageProducts extends PureComponent {
         }
       }
     });
+    this.props.allProducts.refetch();
   }
 
   //DELETE
@@ -200,7 +180,7 @@ class ManageProducts extends PureComponent {
         }
       }
     });
-
+    
     this.props.allProducts.refetch();
     this.setState({	
 			selectedProductIndex: null
@@ -220,27 +200,12 @@ class ManageProducts extends PureComponent {
     }
 
     const allProducts = this.props.allProducts.viewer.allProducts.edges;
-    if (allProducts.length === 0) {
-      return (
-        <div className="row">
-          <div className="col-md-8">
-            <h2>Products</h2>
-            <ul><li>Not found</li></ul>
-          </div>
-          <div className="col-md-4">
-            <h2>{selectedProductIndex!=null&&allProducts[selectedProductIndex].node.name}</h2>
-            <ProductInputForm/>
-            <button type="button" className="btn btn-primary" onClick={this.createProduct}>Create</button>
-            <button type="button" className="btn btn-primary" onClick={this.updateProduct}>Update</button>
-            <button type="button" className="btn btn-danger"  onClick={this.deleteProduct}>Remove</button>
-            
-          </div>
-        </div>
     
-      );
-    }
-    const selectedProductIndex = this.state.selectedProductIndex 
-
+   
+    if (allProducts.length === 0) {
+     }
+    const selectedProductIndex = this.state.selectedProductIndex;
+ 
     return (
 
       <div className="row">
@@ -260,7 +225,7 @@ class ManageProducts extends PureComponent {
         </div>
         <div className="col-md-4">
           <h2>{selectedProductIndex!=null&&allProducts[selectedProductIndex].node.name}</h2>
-          <ProductInputForm/>
+          <ProductInputForm selected={selectedProductIndex!=null&&allProducts[selectedProductIndex].node.categories}/>
           <button type="button" className="btn btn-primary" onClick={this.createProduct}>Create</button>
           <button type="button" className="btn btn-primary" onClick={this.updateProduct}>Update</button>
           <button type="button" className="btn btn-danger"  onClick={this.deleteProduct}>Remove</button>

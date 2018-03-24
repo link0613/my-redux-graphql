@@ -12,8 +12,8 @@ class CategoryInputForm extends PureComponent {
     return (
       <div>
         <div className="form-group">
-          <label htmlFor="categoryName"> Category Name </label>
-          <input type="text" className="form-control" id="categoryName" placeholder="Category Name"/>
+          <label htmlFor="categoryName"> Name </label>
+          <input type="text" className="form-control" id="categoryName" placeholder="Name"/>
         </div> 
         <div className="form-group">
           <label htmlFor="categoryDescription"> Description </label>

@@ -71,9 +71,26 @@ class NavigationBar extends PureComponent {
     if (allCategories.length === 0) {
       return <div>No Category</div>;
     }
+    
+ 
+    const categoriesList = allCategories.map(obj =>{ 
+      var rObj = {};
+      rObj['sort'] = obj.node.sort;
+      rObj['label'] = obj.node.name;
+      rObj['link'] = '/';
+      rObj['view'] = obj.node.name;
+      rObj['isRouteBtn'] = true;
+      rObj['showWhenUserAuth'] = true;
+      rObj['hideWhenUserAuth'] = false;
+      return rObj;
+    })
+    
+    let navModelAssign = Object.assign({}, navModel);
+    let navModelCategories = Object.assign([], navModelAssign.rightLinks);
+    categoriesList.forEach(function(element) {
+      navModelCategories.splice(1,0,element);
+    });
 
-
-    console.log(allCategories );
     return(
       <nav className="navbar navbar-default">
         <div className="containersCustom">
@@ -100,7 +117,7 @@ class NavigationBar extends PureComponent {
             <ul className="nav navbar-nav navbar-right">
               {
                 <RightNav
-                  rightLinks={navModel.rightLinks}
+                  rightLinks={navModelCategories}
                   onRightNavButtonClick={handleRightNavItemClick}
                   userIsAuthenticated={userIsAuthenticated}
                 />

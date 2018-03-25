@@ -6,7 +6,7 @@ import React, {
 import PropTypes    from 'prop-types';
 import gql          from 'graphql-tag';
 import { graphql }  from 'react-apollo';
-import { compose }  from 'react-apollo'
+import { compose }  from 'react-apollo';
 import CategoryInputForm from './CategoryInputForm'
 
 const ALL_CATEGORIES = gql`

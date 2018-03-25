@@ -1,4 +1,4 @@
-ES6+ React + React-Router + Redux + GraphQL + Apollo Client + Bootstrap
+V1 World (React + React-Router + Redux + GraphQL + Apollo Client)
 ==========
 
 ## Detailed Content
@@ -38,9 +38,10 @@ ES6+ React + React-Router + Redux + GraphQL + Apollo Client + Bootstrap
 - enzyme
 - Sinon
 - nyc
+> (Not completed yet)
 
-
-## Usage
+## API & DB
+-Scaphold.io
 
 ### Prerequisite
 

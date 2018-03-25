@@ -1,0 +1,29 @@
+.product{
+  display: flex;
+  flex-wrap: wrap;
+
+  &-thumb{
+    margin: 25px;
+    width: 200px;
+    height: 260px;
+    background-color: #aaaaaa;
+    &:hover{
+      background-color: #bbb;
+      border: 1px solid red;
+    }
+    &-name{
+      position: relative;
+      top: 200px;
+      width: 200px;
+      text-align: center;
+    }
+    &-price{
+      position: relative;
+      top:210px;
+      width: 200px;
+      text-align: center;
+    }
+    
+  }
+  
+}

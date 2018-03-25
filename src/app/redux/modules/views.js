@@ -9,6 +9,8 @@ const dateFormat = 'DD/MM/YYYY HH:mm';
 // non protected views:
 const ENTER_HOME_VIEW     = 'ENTER_HOME_VIEW';
 const LEAVE_HOME_VIEW     = 'LEAVE_HOME_VIEW';
+const ENTER_PRODUCT_VIEW     = 'ENTER_PRODUCT_VIEW';
+const LEAVE_PRODUCT_VIEW     = 'LEAVE_PRODUCT_VIEW';
 const ENTER_ABOUT_VIEW    = 'ENTER_ABOUT_VIEW';
 const LEAVE_ABOUT_VIEW    = 'LEAVE_ABOUT_VIEW';
 const ENTER_LOGIN_VIEW    = 'ENTER_LOGIN_VIEW';
@@ -104,7 +106,18 @@ export function leaveHome() {
     currentView:  'home'
   };
 }
-
+export function enterProduct() {
+  return {
+    type:         ENTER_PRODUCT_VIEW,
+    currentView:  'product'
+  };
+}
+export function leaveProduct() {
+  return {
+    type:         LEAVE_PRODUCT_VIEW,
+    currentView:  'product'
+  };
+}
 export function enterAbout() {
   return {
     type:         ENTER_ABOUT_VIEW,

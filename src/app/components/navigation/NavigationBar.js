@@ -71,17 +71,17 @@ class NavigationBar extends PureComponent {
     if (allCategories.length === 0) {
       return <div>No Category</div>;
     }
-    
  
     const categoriesList = allCategories.map(obj =>{ 
       var rObj = {};
       rObj['sort'] = obj.node.sort;
       rObj['label'] = obj.node.name;
-      rObj['link'] = '/';
+      rObj['link'] = '/product';
       rObj['view'] = obj.node.name;
       rObj['isRouteBtn'] = true;
       rObj['showWhenUserAuth'] = true;
       rObj['hideWhenUserAuth'] = false;
+      rObj['alwaysShows'] = true;
       return rObj;
     })
     
@@ -90,6 +90,7 @@ class NavigationBar extends PureComponent {
     categoriesList.forEach(function(element) {
       navModelCategories.splice(1,0,element);
     });
+    console.log (navModelCategories)
 
     return(
       <nav className="navbar navbar-default">

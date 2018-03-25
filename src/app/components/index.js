@@ -9,3 +9,4 @@ export { default as Alert }             from './alert/Alert';
 export { default as Dashboard }         from './adminPanel/Dashboard';
 export { default as ManageCategories }  from './adminPanel/ManageCategories';
 export { default as ManageProducts }    from './adminPanel/ManageProducts'; 
+export { default as ProductView }       from './product/ProductView'; 

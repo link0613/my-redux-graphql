@@ -30,7 +30,8 @@ class App extends Component {
   }
 
   state = {
-    navModel : navigationModel
+    navModel : navigationModel,
+    selectedCategory: null
   };
 
   componentDidMount() {
@@ -44,7 +45,7 @@ class App extends Component {
   }
 
   render() {
-    const { navModel } = this.state;
+    const { navModel, selectedCategory } = this.state;
 
     const {
       children,
@@ -64,7 +65,7 @@ class App extends Component {
       <h1>
       </h1>
         <div className="container-fluid">
-          <MainRoutes />
+          <MainRoutes selectedCategory={selectedCategory} />
         </div>
         <BackToTop
           minScrollY={40}
@@ -93,6 +94,12 @@ class App extends Component {
         }
       } = this.props;
       setUserLogout();
+    } else {
+      if (viewName !== 'home' && viewName !=='about' && viewName !=='protected' && viewName !=='login') {
+        this.setState({
+          selectedCategory: viewName
+        });
+      }
     }
   }
 }

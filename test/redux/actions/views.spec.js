@@ -3,6 +3,8 @@ import dirtyChai      from 'dirty-chai';
 import {
   enterHome,
   leaveHome,
+  enterProduct,
+  leaveProduct,
   enterAbout,
   leaveAbout,
   enterLogin,
@@ -31,6 +33,22 @@ describe('redux - action creator "views"', () => {
       currentView:  'home'
     };
     expect(leaveHome()).to.deep.equal(leaveHomeACTION);
+  });
+
+  it('should return enterProduct action object', () => {
+    const enterProductACTION = {
+      type:         'ENTER_PRODUCT_VIEW',
+      currentView:  'product'
+    };
+    expect(enterProduct()).to.deep.equal(enterProductACTION);
+  });
+
+  it('should return leaveProduct action object', () => {
+    const leaveProductACTION = {
+      type:         'LEAVE_PRODUCT_VIEW',
+      currentView:  'product'
+    };
+    expect(leaveHome()).to.deep.equal(leaveProductACTION);
   });
 
 

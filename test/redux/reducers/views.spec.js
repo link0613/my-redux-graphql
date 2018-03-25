@@ -52,6 +52,41 @@ describe('redux - reducer "views"', () => {
     /* eslint-enable no-undefined */
   });
 
+  it('should set state according to ENTER_PRODUCT_VIEW action', () => {
+    const now = moment().format(dateFormat);
+    const action = {
+      type:         'ENTER_PRODUCT_VIEW',
+      currentView:  'product',
+      enterTime:    now,
+      leaveTime:    null
+    };
+    const expectedState = {
+      currentView:  'product',
+      enterTime:    now,
+      leaveTime:    null
+    };
+    /* eslint-disable no-undefined */
+    expect(views(undefined, action)).to.deep.equal(expectedState);
+    /* eslint-enable no-undefined */
+  });
+
+  it('should set state according to LEAVE_PRODUCT_VIEW action', () => {
+    const now = moment().format(dateFormat);
+    const actionLeaveProduct = {
+      type:         'LEAVE_PRODUCT_VIEW',
+      currentView:  'product',
+      enterTime:    null,
+      leaveTime:    now
+    };
+    const expectedState = {
+      currentView:  'product',
+      enterTime:    null,
+      leaveTime:    now
+    };
+    /* eslint-disable no-undefined */
+    expect(views({currentView: 'product', enterTime: null}, actionLeaveProduct)).to.deep.equal(expectedState);
+    /* eslint-enable no-undefined */
+  });
 
   it('should set state according to ENTER_ABOUT_VIEW action', () => {
     const now = moment().format(dateFormat);
